@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "strictPropertyInitialization": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@app/*": ["./src/app/*"],
+      "@config/*": ["./src/config/*"],
+      "@controllers/*": ["./src/infra/http/controllers/*"],
+      "@dtos/*": ["./src/infra/http/dtos/*"],
+      "@entities/*": ["./src/app/entities/*"],
+      "@environments": ["./src/config/environments"],
+      "@infra/*": ["./src/infra/*"],
+      "@helpers": ["src/helpers"]
+    }
+  }
+}

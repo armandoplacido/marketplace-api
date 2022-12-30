@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  mysql:
+    platform: linux/x86_64
+    image: mysql:${MYSQL_VERSION}
+    container_name: marketplace_db
+    restart: always
+    ports:
+      - '${MYSQL_PORT}:3306'
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=America/Sao_Paulo

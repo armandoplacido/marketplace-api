@@ -1,0 +1,134 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id               String             @id @default(uuid())
+  name             String
+  email            String
+  password         String
+  cpf              String
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime?          @db.DateTime(0)
+  deletedAt        DateTime?          @db.DateTime(0)
+  RoleOnUser       RoleOnUser[]
+  PermissionOnUser PermissionOnUser[]
+
+  @@map("users")
+}
+
+model Role {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  description String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @db.DateTime(0)
+
+  RoleOnUser       RoleOnUser[]
+  PermissionOnRole PermissionOnRole[]
+
+  @@map("roles")
+}
+
+model RoleOnUser {
+  id        String    @id @default(uuid())
+  userId    String
+  roleId    String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @db.DateTime(0)
+
+  user Users @relation(fields: [userId], references: [id])
+  role Role  @relation(fields: [roleId], references: [id])
+
+  @@index([userId])
+  @@index([roleId])
+  @@map("role_on_user")
+}
+
+model Permission {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  description String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @db.DateTime(0)
+
+  PermissionOnUser PermissionOnUser[]
+  PermissionOnRole PermissionOnRole[]
+
+  @@map("permissions")
+}
+
+model PermissionOnUser {
+  id           String    @id @default(uuid())
+  userId       String
+  permissionId String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime? @db.DateTime(0)
+
+  user       Users      @relation(fields: [userId], references: [id])
+  permission Permission @relation(fields: [permissionId], references: [id])
+
+  @@index([userId])
+  @@index([permissionId])
+  @@map("permission_on_user")
+}
+
+model PermissionOnRole {
+  id           String    @id @default(uuid())
+  roleId       String
+  permissionId String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime? @db.DateTime(0)
+
+  role       Role       @relation(fields: [roleId], references: [id])
+  permission Permission @relation(fields: [permissionId], references: [id])
+
+  @@index([roleId])
+  @@index([permissionId])
+  @@map("permission_on_role")
+}
+
+model Product {
+  id        String    @id @default(uuid())
+  name      String
+  price     Float
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @db.DateTime(0)
+
+  CategoryOnProduct CategoryOnProduct[]
+
+  @@map("products")
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  description String    @db.Text
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @db.DateTime(0)
+
+  CategoryOnProduct CategoryOnProduct[]
+
+  @@map("categories")
+}
+
+model CategoryOnProduct {
+  id         String @id @default(uuid())
+  productId  String
+  categoryId String
+
+  product  Product  @relation(fields: [productId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
+
+  @@index([productId])
+  @@index([categoryId])
+  @@map("category_on_product")
+}
