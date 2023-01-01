@@ -1,6 +1,7 @@
 import { User } from '@app/entities/user'
 
 export abstract class UsersRepository {
+  abstract findAll(): Promise<User[]>
   abstract getUser(id: string): Promise<User | null>
   abstract getUserByEmail(email: string): Promise<User | null>
   abstract getUserByCpf(cpf: string): Promise<User | null>
