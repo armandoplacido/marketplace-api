@@ -1,15 +1,18 @@
 import { User } from '@app/entities/user'
-import { UserNotFound } from '@app/errors/users'
 
 import { UsersRepository } from '../users-repositories'
 
 export class InMemoUsersRepository implements UsersRepository {
   public users: User[] = []
 
-  async getUser(id: string): Promise<User> {
+  async findAll(): Promise<User[]> {
+    return this.users
+  }
+
+  async getUser(id: string): Promise<User | null> {
     const user = this.users.find((user) => user.id === id)
 
-    if (!user) throw new UserNotFound()
+    if (!user) return null
 
     return user
   }
@@ -36,8 +39,6 @@ export class InMemoUsersRepository implements UsersRepository {
 
   async save(user: User): Promise<void> {
     const index = this.users.findIndex((u) => u.id === user.id)
-
-    if (index < 0) throw new UserNotFound()
 
     this.users[index] = user
   }
