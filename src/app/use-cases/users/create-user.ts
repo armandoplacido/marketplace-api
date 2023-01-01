@@ -1,31 +1,32 @@
 import { Injectable } from '@nestjs/common'
 
 import { User } from '@app/entities/user'
-import { Cpf, Email, UserName } from '@app/entities/value-objects'
+import { Cpf, Email, Password, UserName } from '@app/entities/value-objects'
+import { CreateUserError, UserCpfAlreadyExists, UserEmailAlreadyExists } from '@app/errors/user'
 import { UsersRepository } from '@app/repositories'
-import { BCryptEncrypter, HttpResponse } from '@helpers'
+import { BCryptEncrypter } from '@helpers'
 
-type CreateUserRequest = {
+interface CreateUserRequest {
   name: string
   email: string
   password: string
   cpf: string
 }
 
-type CreateUserResponse = void
+// interface CreateUserResponse {}
 
 @Injectable()
 export class CreateUser {
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  async execute(request: CreateUserRequest): Promise<CreateUserResponse> {
+  async execute(request: CreateUserRequest): Promise<void> {
     const findUserByEmail = await this.usersRepository.getUserByEmail(request.email)
 
-    if (findUserByEmail) throw HttpResponse.badRequest('O email já está em uso')
+    if (findUserByEmail) throw new UserEmailAlreadyExists()
 
     const findUserByCpf = await this.usersRepository.getUserByCpf(request.cpf)
 
-    if (findUserByCpf) throw HttpResponse.badRequest('O cpf já está em uso')
+    if (findUserByCpf) throw new UserCpfAlreadyExists()
 
     const password = BCryptEncrypter.generate(request.password)
 
@@ -33,9 +34,13 @@ export class CreateUser {
       name: new UserName(request.name),
       email: new Email(request.email),
       cpf: new Cpf(request.cpf),
-      password: password
+      password: new Password(password)
     })
 
-    await this.usersRepository.create(user)
+    try {
+      await this.usersRepository.create(user)
+    } catch (error) {
+      throw new CreateUserError(error.message)
+    }
   }
 }
