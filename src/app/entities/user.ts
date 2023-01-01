@@ -1,12 +1,12 @@
 import { Replace } from '@helpers'
 
 import { Entity } from './entity'
-import { Cpf, Email, UserName } from './value-objects'
+import { Cpf, Email, Password, UserName } from './value-objects'
 
 export interface IUser {
   name: UserName
   email: Email
-  password: string
+  password: Password
   cpf: Cpf
   createdAt: Date
   updatedAt?: Date | null
@@ -40,11 +40,11 @@ export class User extends Entity {
     this.props.email = email
   }
 
-  get password(): string {
+  get password(): Password {
     return this.props.password
   }
 
-  set password(password: string) {
+  set password(password: Password) {
     this.props.password = password
   }
 
@@ -64,8 +64,12 @@ export class User extends Entity {
     return this.props.updatedAt ?? null
   }
 
-  public update() {
-    this.props.updatedAt = new Date()
+  public update(data: Partial<IUser>) {
+    this.props = {
+      ...this.props,
+      ...data,
+      updatedAt: new Date()
+    }
   }
 
   get deletedAt(): Date | null {
