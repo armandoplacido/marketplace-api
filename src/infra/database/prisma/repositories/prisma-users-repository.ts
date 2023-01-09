@@ -10,6 +10,12 @@ import { PrismaService } from '../prisma.service'
 export class PrismaUsersRepository implements UsersRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  async findAll(): Promise<User[]> {
+    const users = await this.prisma.users.findMany()
+
+    return users.map(PrismaUserMapper.toFront)
+  }
+
   async getUser(id: string): Promise<User | null> {
     const user = await this.prisma.users.findFirst({
       where: {
@@ -31,6 +37,7 @@ export class PrismaUsersRepository implements UsersRepository {
     })
 
     if (!user) return null
+
     return PrismaUserMapper.toFront(user)
   }
 
