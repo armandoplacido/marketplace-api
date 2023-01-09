@@ -1,7 +1,7 @@
 import { Users as PrismaUser } from '@prisma/client'
 
 import { User } from '@app/entities/user'
-import { Cpf, Email, UserName } from '@app/entities/value-objects'
+import { Cpf, Email, Password, UserName } from '@app/entities/value-objects'
 
 export class PrismaUserMapper {
   static toPrisma(user: User) {
@@ -10,7 +10,7 @@ export class PrismaUserMapper {
       name: user.name.value,
       email: user.email.value,
       cpf: user.cpf.value,
-      password: user.password,
+      password: user.password.value,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
       deletedAt: user.deletedAt
@@ -23,7 +23,7 @@ export class PrismaUserMapper {
         name: new UserName(raw.name),
         email: new Email(raw.email),
         cpf: new Cpf(raw.cpf),
-        password: raw.password
+        password: new Password(raw.password)
       },
       raw.id.toString()
     )
