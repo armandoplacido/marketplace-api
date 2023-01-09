@@ -1,6 +1,6 @@
 import { User } from '@app/entities/user'
 
-import { UsersRepository } from '../users-repositories'
+import { UsersRepository } from '../users-repository'
 
 export class InMemoUsersRepository implements UsersRepository {
   public users: User[] = []
