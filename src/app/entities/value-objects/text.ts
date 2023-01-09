@@ -1,4 +1,4 @@
-import { InvalidText } from '@app/errors/value-objects'
+import { InvalidText } from '@app/errors/value-objects/text'
 
 import { ValueObject } from './value-object'
 

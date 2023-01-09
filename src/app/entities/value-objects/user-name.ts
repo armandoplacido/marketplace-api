@@ -1,4 +1,4 @@
-import { InvalidUserNameFormat, InvalidUserNameLenth } from '@app/errors/value-objects'
+import { InvalidUserNameFormat, InvalidUserNameLenth } from '@app/errors/value-objects/user-name'
 
 import { Text } from './text'
 

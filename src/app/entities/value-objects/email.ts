@@ -1,4 +1,4 @@
-import { InvalidEmailFormat } from '@app/errors/value-objects'
+import { InvalidEmailFormat } from '@app/errors/value-objects/email'
 
 import { Text } from './text'
 

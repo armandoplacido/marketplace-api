@@ -1,4 +1,4 @@
-import { InvalidCpfFormat } from '@app/errors/value-objects'
+import { InvalidCpfFormat } from '@app/errors/value-objects/cpf'
 import { Validator } from '@helpers'
 
 import { Text } from './text'
