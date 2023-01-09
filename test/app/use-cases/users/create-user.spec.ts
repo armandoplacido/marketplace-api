@@ -1,4 +1,4 @@
-import { UserCpfAlreadyExists, UserEmailAlreadyExists } from '@app/errors/users'
+import { UserCpfAlreadyExists, UserEmailAlreadyExists } from '@app/errors/user'
 import { InMemoUsersRepository } from '@app/repositories/InMemory'
 import { CreateUser } from '@app/use-cases/users'
 
